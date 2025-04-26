@@ -25,17 +25,14 @@ import {
   SEMRESATTRS_SERVICE_INSTANCE_ID,
   SEMRESATTRS_SERVICE_NAME,
 } from '@opentelemetry/semantic-conventions';
-import { azureFunctionsDetector } from '../../src';
+import { azureFunctionsDetector, azureContainerAppsDetector } from '../../src';
 import { detectResources } from '@opentelemetry/resources';
 
 describe('AzureAppServiceDetector', () => {
-  let originalEnv: NodeJS.ProcessEnv;
-  beforeEach(() => {
-    originalEnv = process.env;
-  });
+  const originalEnv = { ...process.env };
 
   afterEach(() => {
-    process.env = originalEnv;
+    process.env = { ...originalEnv };
   });
 
   it('should test on appService', () => {
@@ -49,7 +46,11 @@ describe('AzureAppServiceDetector', () => {
     process.env.WEBSITE_OWNER_NAME = 'test-owner-name';
 
     const resource = detectResources({
-      detectors: [azureFunctionsDetector, azureAppServiceDetector],
+      detectors: [
+        azureFunctionsDetector,
+        azureAppServiceDetector,
+        azureContainerAppsDetector,
+      ],
     });
     assert.ok(resource);
     const attributes = resource.attributes;
@@ -89,7 +90,11 @@ describe('AzureAppServiceDetector', () => {
     process.env.WEBSITE_OWNER_NAME = 'test-owner-name';
 
     const resource = detectResources({
-      detectors: [azureFunctionsDetector, azureAppServiceDetector],
+      detectors: [
+        azureFunctionsDetector,
+        azureAppServiceDetector,
+        azureContainerAppsDetector,
+      ],
     });
     assert.ok(resource);
     const attributes = resource.attributes;
@@ -120,7 +125,11 @@ describe('AzureAppServiceDetector', () => {
     delete process.env.WEBSITE_OWNER_NAME;
 
     const resource = detectResources({
-      detectors: [azureFunctionsDetector, azureAppServiceDetector],
+      detectors: [
+        azureFunctionsDetector,
+        azureAppServiceDetector,
+        azureContainerAppsDetector,
+      ],
     });
     assert.ok(resource);
     const attributes = resource.attributes;

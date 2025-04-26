@@ -18,4 +18,5 @@ export {
   azureAppServiceDetector,
   azureFunctionsDetector,
   azureVmDetector,
+  azureContainerAppsDetector,
 } from './detectors';

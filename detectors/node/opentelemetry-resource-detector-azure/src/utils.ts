@@ -15,6 +15,11 @@
  */
 
 import {
+  CONTAINER_APP_HOSTNAME,
+  CONTAINER_APP_JOB_EXECUTION_NAME,
+  CONTAINER_APP_JOB_NAME,
+  CONTAINER_APP_NAME,
+  CONTAINER_APP_REVISION,
   FUNCTIONS_VERSION,
   WEBSITE_OWNER_NAME,
   WEBSITE_RESOURCE_GROUP,
@@ -44,4 +49,41 @@ export function isAzureFunction(): boolean {
     process.env[FUNCTIONS_VERSION] ||
     process.env[WEBSITE_SKU] === 'FlexConsumption'
   );
+}
+
+export function isAzureContainerApps(): boolean {
+  return !!(
+    process.env[CONTAINER_APP_NAME] &&
+    process.env[CONTAINER_APP_REVISION] &&
+    process.env[CONTAINER_APP_HOSTNAME]
+  );
+}
+
+export function isAzureContainerAppsJob(): boolean {
+  return !!(
+    process.env[CONTAINER_APP_JOB_NAME] &&
+    process.env[CONTAINER_APP_JOB_EXECUTION_NAME]
+  );
+}
+
+export function getAzureRegion(): string | undefined {
+  const containerAppHostname = process.env[CONTAINER_APP_HOSTNAME];
+  if (containerAppHostname) {
+    const bits = containerAppHostname.split('.');
+    if (bits.length === 5) {
+      return bits[2];
+    }
+  }
+  return undefined;
+}
+
+export function getAzureContainerAppsNamespace(): string | undefined {
+  const containerAppHostname = process.env[CONTAINER_APP_HOSTNAME];
+  if (containerAppHostname) {
+    const bits = containerAppHostname.split('.');
+    if (bits.length === 5) {
+      return bits[1];
+    }
+  }
+  return undefined;
 }

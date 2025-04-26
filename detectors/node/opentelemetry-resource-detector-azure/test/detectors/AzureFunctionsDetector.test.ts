@@ -17,6 +17,7 @@
 import * as assert from 'assert';
 import { azureFunctionsDetector } from '../../src/detectors/AzureFunctionsDetector';
 import { azureAppServiceDetector } from '../../src/detectors/AzureAppServiceDetector';
+import { azureContainerAppsDetector } from '../../src/detectors/AzureContainerAppsDetector';
 import {
   SEMRESATTRS_CLOUD_PLATFORM,
   SEMRESATTRS_CLOUD_PROVIDER,
@@ -31,13 +32,10 @@ import { detectResources } from '@opentelemetry/resources';
 import { AZURE_APP_SERVICE_STAMP_RESOURCE_ATTRIBUTE } from '../../src/types';
 
 describe('AzureFunctionsDetector', () => {
-  let originalEnv: NodeJS.ProcessEnv;
-  beforeEach(() => {
-    originalEnv = process.env;
-  });
+  const originalEnv = { ...process.env };
 
   afterEach(() => {
-    process.env = originalEnv;
+    process.env = { ...originalEnv };
   });
 
   it('should test functions values', () => {
@@ -50,7 +48,11 @@ describe('AzureFunctionsDetector', () => {
     process.env.WEBSITE_RESOURCE_GROUP = 'test-resource-group';
 
     const resource = detectResources({
-      detectors: [azureFunctionsDetector, azureAppServiceDetector],
+      detectors: [
+        azureFunctionsDetector,
+        azureAppServiceDetector,
+        azureContainerAppsDetector,
+      ],
     });
     assert.ok(resource);
     const attributes = resource.attributes;
@@ -92,7 +94,11 @@ describe('AzureFunctionsDetector', () => {
 
     const expectedWebsiteOwnerName = 'test-owner-name';
     const resource = detectResources({
-      detectors: [azureFunctionsDetector, azureAppServiceDetector],
+      detectors: [
+        azureFunctionsDetector,
+        azureAppServiceDetector,
+        azureContainerAppsDetector,
+      ],
     });
     assert.ok(resource);
     const attributes = resource.attributes;
@@ -114,7 +120,11 @@ it('should detect azure functions if websiteSku is defined as FlexConsumption', 
   process.env.WEBSITE_RESOURCE_GROUP = 'test-resource-group';
 
   const resource = detectResources({
-    detectors: [azureFunctionsDetector, azureAppServiceDetector],
+    detectors: [
+      azureFunctionsDetector,
+      azureAppServiceDetector,
+      azureContainerAppsDetector,
+    ],
   });
   assert.ok(resource);
   const attributes = resource.attributes;
