@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-export { azureAppServiceDetector } from './AzureAppServiceDetector';
-export { azureFunctionsDetector } from './AzureFunctionsDetector';
-export { azureVmDetector } from './AzureVmDetector';
-export { azureContainerAppsDetector } from './AzureContainerAppsDetector';
+export const ATTR_SERVICE_NAME = 'service.name';
+export const ATTR_SERVICE_NAMESPACE = 'service.namespace';
+export const ATTR_SERVICE_INSTANCE_ID = 'service.instance.id';
+export const ATTR_CLOUD_PROVIDER = 'cloud.provider';
+export const CLOUD_PROVIDER_VALUE_AZURE = 'azure';
+export const ATTR_CLOUD_PLATFORM = 'cloud.platform';
+export const CLOUD_PLATFORM_VALUE_AZURE_CONTAINER_APPS = 'azure_container_apps';
+export const ATTR_CLOUD_REGION = 'cloud.region';
